@@ -7,15 +7,15 @@
 <line class="grid" x1="95" y1="505.00" x2="1045.00" y2="505.00"/>
 <text x="85" y="509.00" font-size="12" text-anchor="end">0.00</text>
 <line class="grid" x1="95" y1="418.00" x2="1045.00" y2="418.00"/>
-<text x="85" y="422.00" font-size="12" text-anchor="end">4.58</text>
+<text x="85" y="422.00" font-size="12" text-anchor="end">3.88</text>
 <line class="grid" x1="95" y1="331.00" x2="1045.00" y2="331.00"/>
-<text x="85" y="335.00" font-size="12" text-anchor="end">9.15</text>
+<text x="85" y="335.00" font-size="12" text-anchor="end">7.77</text>
 <line class="grid" x1="95" y1="244.00" x2="1045.00" y2="244.00"/>
-<text x="85" y="248.00" font-size="12" text-anchor="end">13.73</text>
+<text x="85" y="248.00" font-size="12" text-anchor="end">11.65</text>
 <line class="grid" x1="95" y1="157.00" x2="1045.00" y2="157.00"/>
-<text x="85" y="161.00" font-size="12" text-anchor="end">18.31</text>
+<text x="85" y="161.00" font-size="12" text-anchor="end">15.54</text>
 <line class="grid" x1="95" y1="70.00" x2="1045.00" y2="70.00"/>
-<text x="85" y="74.00" font-size="12" text-anchor="end">22.88</text>
+<text x="85" y="74.00" font-size="12" text-anchor="end">19.42</text>
 <text x="24" y="287.50" font-size="14" text-anchor="middle" transform="rotate(-90 24 287.50)">Tempo medio (ms)</text>
 <rect x="780" y="59" width="16" height="16" fill="#2457a6" rx="3"/>
 <text x="804" y="72" font-size="13">DonQuixote-388208.txt</text>
@@ -25,30 +25,38 @@
 <text x="804" y="120" font-size="13">MobyDick-217452.txt</text>
 <text x="95.00" y="550" font-size="13" text-anchor="middle">1</text>
 <line x1="95.00" y1="70" x2="95.00" y2="505" stroke="#e8edf3"/>
-<text x="570.00" y="550" font-size="13" text-anchor="middle">2</text>
-<line x1="570.00" y1="70" x2="570.00" y2="505" stroke="#e8edf3"/>
-<text x="1045.00" y="550" font-size="13" text-anchor="middle">4</text>
+<text x="411.67" y="550" font-size="13" text-anchor="middle">2</text>
+<line x1="411.67" y1="70" x2="411.67" y2="505" stroke="#e8edf3"/>
+<text x="728.33" y="550" font-size="13" text-anchor="middle">4</text>
+<line x1="728.33" y1="70" x2="728.33" y2="505" stroke="#e8edf3"/>
+<text x="1045.00" y="550" font-size="13" text-anchor="middle">8</text>
 <line x1="1045.00" y1="70" x2="1045.00" y2="505" stroke="#e8edf3"/>
 <text x="570.00" y="592" font-size="14" text-anchor="middle">Threads usadas no ParallelCPU</text>
-<polyline points="95.00,70.00 570.00,207.36 1045.00,257.82 " fill="none" stroke="#2457a6" stroke-width="3"/>
+<polyline points="95.00,70.00 411.67,223.13 728.33,290.94 1045.00,271.20 " fill="none" stroke="#2457a6" stroke-width="3"/>
 <circle cx="95.00" cy="70.00" r="5" fill="#2457a6"/>
-<text x="95.00" y="60.00" font-size="11" text-anchor="middle">22.88</text>
-<circle cx="570.00" cy="207.36" r="5" fill="#2457a6"/>
-<text x="570.00" y="197.36" font-size="11" text-anchor="middle">15.66</text>
-<circle cx="1045.00" cy="257.82" r="5" fill="#2457a6"/>
-<text x="1045.00" y="247.82" font-size="11" text-anchor="middle">13.00</text>
-<polyline points="95.00,274.56 570.00,381.21 1045.00,329.24 " fill="none" stroke="#d95f02" stroke-width="3"/>
-<circle cx="95.00" cy="274.56" r="5" fill="#d95f02"/>
-<text x="95.00" y="264.56" font-size="11" text-anchor="middle">12.12</text>
-<circle cx="570.00" cy="381.21" r="5" fill="#d95f02"/>
-<text x="570.00" y="371.21" font-size="11" text-anchor="middle">6.51</text>
-<circle cx="1045.00" cy="329.24" r="5" fill="#d95f02"/>
-<text x="1045.00" y="319.24" font-size="11" text-anchor="middle">9.25</text>
-<polyline points="95.00,291.66 570.00,343.20 1045.00,283.33 " fill="none" stroke="#1b9e77" stroke-width="3"/>
-<circle cx="95.00" cy="291.66" r="5" fill="#1b9e77"/>
-<text x="95.00" y="281.66" font-size="11" text-anchor="middle">11.22</text>
-<circle cx="570.00" cy="343.20" r="5" fill="#1b9e77"/>
-<text x="570.00" y="333.20" font-size="11" text-anchor="middle">8.51</text>
-<circle cx="1045.00" cy="283.33" r="5" fill="#1b9e77"/>
-<text x="1045.00" y="273.33" font-size="11" text-anchor="middle">11.66</text>
+<text x="95.00" y="60.00" font-size="11" text-anchor="middle">19.42</text>
+<circle cx="411.67" cy="223.13" r="5" fill="#2457a6"/>
+<text x="411.67" y="213.13" font-size="11" text-anchor="middle">12.58</text>
+<circle cx="728.33" cy="290.94" r="5" fill="#2457a6"/>
+<text x="728.33" y="280.94" font-size="11" text-anchor="middle">9.56</text>
+<circle cx="1045.00" cy="271.20" r="5" fill="#2457a6"/>
+<text x="1045.00" y="261.20" font-size="11" text-anchor="middle">10.44</text>
+<polyline points="95.00,295.23 411.67,387.77 728.33,421.47 1045.00,384.55 " fill="none" stroke="#d95f02" stroke-width="3"/>
+<circle cx="95.00" cy="295.23" r="5" fill="#d95f02"/>
+<text x="95.00" y="285.23" font-size="11" text-anchor="middle">9.37</text>
+<circle cx="411.67" cy="387.77" r="5" fill="#d95f02"/>
+<text x="411.67" y="377.77" font-size="11" text-anchor="middle">5.23</text>
+<circle cx="728.33" cy="421.47" r="5" fill="#d95f02"/>
+<text x="728.33" y="411.47" font-size="11" text-anchor="middle">3.73</text>
+<circle cx="1045.00" cy="384.55" r="5" fill="#d95f02"/>
+<text x="1045.00" y="374.55" font-size="11" text-anchor="middle">5.38</text>
+<polyline points="95.00,236.76 411.67,357.84 728.33,403.58 1045.00,394.29 " fill="none" stroke="#1b9e77" stroke-width="3"/>
+<circle cx="95.00" cy="236.76" r="5" fill="#1b9e77"/>
+<text x="95.00" y="226.76" font-size="11" text-anchor="middle">11.98</text>
+<circle cx="411.67" cy="357.84" r="5" fill="#1b9e77"/>
+<text x="411.67" y="347.84" font-size="11" text-anchor="middle">6.57</text>
+<circle cx="728.33" cy="403.58" r="5" fill="#1b9e77"/>
+<text x="728.33" y="393.58" font-size="11" text-anchor="middle">4.53</text>
+<circle cx="1045.00" cy="394.29" r="5" fill="#1b9e77"/>
+<text x="1045.00" y="384.29" font-size="11" text-anchor="middle">4.94</text>
 </svg>

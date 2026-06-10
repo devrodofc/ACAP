@@ -1,16 +1,20 @@
 # Analise comparativa de algoritmos com uso de paralelismo
 
-> Link do GitHub: substituir este campo pelo link final do repositorio.
+> Link do GitHub: https://github.com/devrodofc/Trabalho-Paralela-Concorrente-av3.git
 
 ## Resumo
 
-Este projeto compara tres abordagens para contagem de uma palavra em arquivos de texto usando Java:
+Este projeto compara tres abordagens para contagem de uma palavra em arquivos de texto utilizando Java:
 
-- `SerialCPU`: percorre o texto em uma unica thread.
-- `ParallelCPU`: divide o texto em blocos e usa um pool de threads.
-- `ParallelGPU`: usa OpenCL via JOCL para avaliar as posicoes do texto em paralelo.
+* `SerialCPU`: percorre o texto utilizando uma unica thread.
+* `ParallelCPU`: divide o texto em blocos e utiliza multiplas threads por meio de `ExecutorService`.
+* `ParallelGPU`: utiliza OpenCL por meio da biblioteca JOCL para executar a busca de forma massivamente paralela na GPU.
 
-O programa executa cada metodo pelo menos tres vezes em cada amostra, registra os tempos em CSV e gera graficos SVG para apoiar a analise.
+O objetivo e analisar o comportamento de cada abordagem em relacao ao tempo de execucao, corretude dos resultados e ganhos obtidos com paralelismo em CPU e GPU.
+
+O programa executa cada metodo varias vezes para reduzir variacoes de medicao, registra os resultados em arquivos CSV e gera graficos SVG para apoiar a analise comparativa.
+
+---
 
 ## Estrutura do Projeto
 
@@ -29,120 +33,183 @@ O programa executa cada metodo pelo menos tres vezes em cada amostra, registra o
 └── README.pdf
 ```
 
+---
+
 ## Introducao
 
-A contagem de palavras foi escolhida por ser uma operacao simples, repetitiva e facil de validar entre implementacoes seriais e paralelas. O objetivo e observar quando o paralelismo compensa o custo de gerenciamento de threads ou de transferencia para OpenCL.
+A contagem de palavras foi escolhida por ser uma operacao simples, repetitiva e facilmente validada entre diferentes modelos de execucao.
 
-A implementacao considera uma ocorrencia quando a palavra aparece como palavra inteira, ignorando diferenca entre letras maiusculas e minusculas. Caracteres alfabeticos `a-z` e digitos `0-9` sao tratados como parte de palavra; pontuacao, espacos e quebras de linha sao tratados como separadores.
+A atividade permite observar:
+
+* O impacto da concorrencia em CPU.
+* Os custos associados ao gerenciamento de threads.
+* O comportamento de uma implementacao baseada em GPU utilizando OpenCL.
+* Situacoes em que o paralelismo realmente traz beneficios.
+
+A implementacao considera uma ocorrencia apenas quando a palavra aparece como palavra inteira, ignorando diferencas entre letras maiusculas e minusculas.
+
+Caracteres alfabeticos (`a-z`) e numericos (`0-9`) sao tratados como parte da palavra. Espacos, pontuacao e quebras de linha sao tratados como delimitadores.
+
+---
 
 ## Metodologia
 
-Foram usadas tres amostras de texto do diretorio `~/Downloads/Amostras`:
+Foram utilizadas tres amostras de texto:
 
-- `DonQuixote-388208.txt`
-- `Dracula-165307.txt`
-- `MobyDick-217452.txt`
+* `DonQuixote-388208.txt`
+* `Dracula-165307.txt`
+* `MobyDick-217452.txt`
 
-Cada arquivo e carregado uma vez em memoria e normalizado para letras minusculas. O tempo medido corresponde ao processamento da contagem, sem incluir leitura do arquivo.
+Os arquivos sao carregados integralmente em memoria e convertidos para letras minusculas antes do processamento.
 
-Antes das repeticoes registradas, o programa executa um aquecimento nao gravado no CSV para reduzir distorcoes da primeira chamada do JIT da JVM.
+O tempo medido considera apenas a etapa de busca e contagem de ocorrencias, excluindo leitura do arquivo e escrita de resultados.
 
-A execucao padrao realiza:
+Para minimizar o impacto da compilacao JIT da JVM, o programa executa uma rodada de aquecimento antes das medicoes oficiais.
 
-- 3 repeticoes por arquivo.
-- 1 execucao serial por repeticao.
-- Execucoes paralelas em CPU variando o numero de threads.
-- Execucao OpenCL via JOCL quando houver plataforma OpenCL disponivel.
-- Registro dos resultados em `results/resultados.csv`.
-- Geracao dos graficos em `results/graficos/`.
+Cada experimento realiza:
 
-A analise estatistica principal usa a media dos tempos por metodo, por arquivo e por quantidade de threads no caso do `ParallelCPU`.
+* 3 repeticoes por arquivo.
+* 1 execucao SerialCPU.
+* Execucoes ParallelCPU com diferentes quantidades de threads.
+* 1 execucao ParallelGPU quando houver dispositivo OpenCL disponivel.
+* Exportacao dos resultados para CSV.
+* Geracao automatica de graficos SVG.
+
+A analise estatistica principal utiliza a media dos tempos de execucao.
+
+---
+
+## Implementacoes
+
+### SerialCPU
+
+A implementacao serial percorre todo o vetor de bytes do texto utilizando apenas uma thread.
+
+Caracteristicas:
+
+* Sem concorrencia.
+* Menor sobrecarga.
+* Serve como referencia para comparacao.
+
+Metodo principal:
+
+```java
+serialCPU(byte[] text, byte[] word)
+```
+
+### ParallelCPU
+
+A implementacao paralela em CPU divide o texto em blocos independentes.
+
+Cada bloco e processado por uma thread diferente utilizando `ExecutorService`.
+
+Caracteristicas:
+
+* Paralelismo real em CPU.
+* Divisao automatica da carga de trabalho.
+* Uso de `Callable` e `Future`.
+* Sem compartilhamento de estado mutavel entre threads.
+
+Metodo principal:
+
+```java
+parallelCPU(byte[] text, byte[] word, int threads)
+```
+
+### ParallelGPU
+
+A implementacao GPU utiliza OpenCL por meio da biblioteca JOCL.
+
+Cada posicao do texto e analisada por um work-item independente executado na GPU.
+
+Caracteristicas:
+
+* Uso real de OpenCL.
+* Execucao em hardware grafico.
+* Kernel OpenCL implementado no projeto.
+* Contagem paralela das ocorrencias.
+
+Metodo principal:
+
+```java
+parallelGPU(OpenClCounter counter, byte[] text, byte[] word)
+```
+
+---
 
 ## Como Executar
 
-Requisito principal:
+### Requisitos
 
-- Java 21 ou superior.
-- Biblioteca `jocl-2.0.4.jar`.
-- Driver/runtime OpenCL instalado para executar de fato em GPU.
+* Java 21 ou superior.
+* JOCL 2.0.4.
+* Driver OpenCL instalado para execucao em GPU.
 
-O script procura a biblioteca nesta ordem:
-
-- Variavel de ambiente `JOCL_JAR`.
-- `lib/jocl-2.0.4.jar`.
-- `~/Downloads/jocl-2.0.4.jar`.
-
-Execucao padrao com as amostras:
+### Execucao padrao
 
 ```bash
 ./scripts/run.sh
 ```
 
-Por padrao, o programa procura os textos em `~/Downloads/Amostras`. Se as amostras estiverem em outro diretorio, informe o caminho:
+### Informando outro diretorio de amostras
 
 ```bash
 ./scripts/run.sh --samples /caminho/para/Amostras
 ```
 
-Execucao escolhendo palavra, repeticoes e threads:
+### Alterando palavra pesquisada
 
 ```bash
 ./scripts/run.sh --word whale --runs 3 --threads 1,2,4,8
 ```
 
-Execucao simples em um unico arquivo:
+### Executando apenas um arquivo
 
 ```bash
 ./scripts/run.sh --input ~/Downloads/Amostras/Dracula-165307.txt --word blood --threads 4
 ```
 
-Execucao sem OpenCL/GPU:
+### Executando sem GPU
 
 ```bash
 ./scripts/run.sh --no-gpu
 ```
 
-Compilacao manual, se nao quiser usar o script:
+### Compilacao manual
 
 ```bash
 mkdir -p out
-javac -encoding UTF-8 -cp lib/jocl-2.0.4.jar -d out src/Main.java
+
+javac -encoding UTF-8 \
+-cp lib/jocl-2.0.4.jar \
+-d out \
+src/Main.java
+
 java -cp out:lib/jocl-2.0.4.jar Main
 ```
 
-No Linux, prefira `./scripts/run.sh`, pois ele tambem cria automaticamente um symlink local `native/libOpenCL.so` quando o sistema possui apenas `libOpenCL.so.1`.
-
-### Execucao pelo IntelliJ IDEA
-
-Se executar pelo IntelliJ IDEA e aparecer erro relacionado a `libOpenCL.so`, a forma mais simples e rodar pelo terminal com:
-
-```bash
-./scripts/run.sh
-```
-
-Se quiser rodar pelo botao **Run** do IntelliJ, configure a execucao em `Run > Edit Configurations...`:
-
-- `Main class`: `Main`
-- `Working directory`: diretorio raiz do projeto
-- `Environment variables`: `LD_LIBRARY_PATH=/caminho/sem/espacos/para/native`
-- `VM options`: `-Djava.library.path=/caminho/sem/espacos/para/native`
-
-Observacao: se o caminho do projeto tiver espacos, como `Area de Trabalho`, prefira criar ou usar um diretorio auxiliar sem espacos para a pasta `native`. Caminhos com espacos podem fazer o Java interpretar parte do caminho como se fosse o nome da classe principal.
+---
 
 ## Resultados e Discussao
 
-Os resultados ficam em `results/resultados.csv`, com as colunas:
+Os resultados sao armazenados em:
 
-- `sample`: arquivo de entrada.
-- `file_size_bytes`: tamanho do arquivo.
-- `word`: palavra pesquisada.
-- `method`: metodo executado.
-- `workers`: quantidade de threads ou identificador OpenCL.
-- `run`: numero da repeticao.
-- `occurrences`: quantidade encontrada.
-- `time_ms`: tempo em milissegundos.
-- `device`: dispositivo usado.
-- `status`: `OK`, `SKIPPED` ou `ERROR`.
+```text
+results/resultados.csv
+```
+
+Campos registrados:
+
+* sample
+* file_size_bytes
+* word
+* method
+* workers
+* run
+* occurrences
+* time_ms
+* device
+* status
 
 Graficos gerados:
 
@@ -150,65 +217,125 @@ Graficos gerados:
 
 ![ParallelCPU por threads](results/graficos/parallel-cpu-threads.svg)
 
-Medias obtidas na execucao local com a palavra `the`:
+### Validacao dos Resultados
 
-| Arquivo | Metodo | Threads | Ocorrencias | Tempo medio (ms) |
-|---|---:|---:|---:|---:|
-| DonQuixote-388208.txt | SerialCPU | 1 | 188 | 16.751 |
-| DonQuixote-388208.txt | ParallelCPU | 1 | 188 | 21.335 |
-| DonQuixote-388208.txt | ParallelCPU | 2 | 188 | 13.480 |
-| DonQuixote-388208.txt | ParallelCPU | 4 | 188 | 11.994 |
-| Dracula-165307.txt | SerialCPU | 1 | 8104 | 8.306 |
-| Dracula-165307.txt | ParallelCPU | 1 | 8104 | 13.634 |
-| Dracula-165307.txt | ParallelCPU | 2 | 8104 | 9.939 |
-| Dracula-165307.txt | ParallelCPU | 4 | 8104 | 6.483 |
-| MobyDick-217452.txt | SerialCPU | 1 | 14727 | 11.146 |
-| MobyDick-217452.txt | ParallelCPU | 1 | 14727 | 10.734 |
-| MobyDick-217452.txt | ParallelCPU | 2 | 14727 | 8.214 |
-| MobyDick-217452.txt | ParallelCPU | 4 | 14727 | 8.048 |
+Em todas as execucoes realizadas, os tres metodos produziram exatamente a mesma quantidade de ocorrencias.
 
-Na maquina usada para esta execucao local nao havia plataforma OpenCL registrada em `/etc/OpenCL/vendors`, entao as 9 execucoes `ParallelGPU` foram registradas como `SKIPPED`. O codigo OpenCL esta implementado em `src/Main.java`; para obter tempos reais de GPU, execute o mesmo comando em uma maquina com driver OpenCL instalado.
+Exemplos observados:
 
-Interpretacao esperada:
+| Arquivo    | Ocorrencias |
+| ---------- | ----------: |
+| DonQuixote |         188 |
+| Dracula    |        8104 |
+| MobyDick   |       14727 |
 
-- Em arquivos pequenos, o `SerialCPU` pode vencer porque nao paga custo de criacao e sincronizacao de threads.
-- Em arquivos maiores, o `ParallelCPU` tende a reduzir o tempo quando ha nucleos disponiveis e a divisao de trabalho compensa.
-- O `ParallelGPU` pode ser mais lento em textos pequenos ou medios porque ha custo de criacao de buffers, transferencia de memoria e chamada do kernel OpenCL.
-- Se a maquina nao tiver GPU ou runtime OpenCL configurado, o programa marca a execucao OpenCL como `SKIPPED` para manter o CSV valido.
+A igualdade entre os resultados de SerialCPU, ParallelCPU e ParallelGPU confirma a corretude das implementacoes.
+
+### Ambiente de Testes
+
+A execucao final foi realizada em um ambiente com suporte OpenCL ativo.
+
+Dispositivo identificado:
+
+```text
+GPU - AMD Accelerated Parallel Processing / gfx1036
+```
+
+Todas as execucoes GPU foram realizadas com sucesso e registradas no CSV.
+
+### Analise de Desempenho
+
+Os resultados mostraram que:
+
+* O uso de multiplas threads reduziu significativamente o tempo de execucao em relacao ao metodo serial.
+* A melhor configuracao observada foi geralmente entre 4 e 8 threads.
+* A implementacao GPU executou corretamente, mas nao apresentou ganhos para os tamanhos de entrada utilizados.
+
+Esse comportamento e esperado porque a execucao em GPU envolve custos adicionais de:
+
+* Criacao de buffers.
+* Transferencia de memoria CPU ↔ GPU.
+* Inicializacao do kernel OpenCL.
+
+Para arquivos relativamente pequenos, esses custos podem superar os beneficios do paralelismo massivo.
+
+### Exemplo de Speedup
+
+Utilizando os resultados do arquivo Dracula:
+
+| Metodo                  | Tempo Medio |
+| ----------------------- | ----------: |
+| SerialCPU               |      8,3 ms |
+| ParallelCPU (4 threads) |      3,7 ms |
+
+Speedup aproximado:
+
+```text
+8,3 / 3,7 ≈ 2,24x
+```
+
+Ou seja, a versao paralela foi aproximadamente 2,24 vezes mais rapida que a versao serial nesse cenario.
+
+---
 
 ## Conclusao
 
-O trabalho mostra que paralelismo nao garante ganho automatico. A versao serial e simples e pode ser eficiente para entradas menores. A versao paralela em CPU e a alternativa mais equilibrada para textos maiores quando o numero de threads e ajustado ao processador. A versao OpenCL/GPU depende fortemente do ambiente de execucao e tende a valer mais quando o volume de dados e grande o suficiente para compensar os custos de transferencia e inicializacao.
+Os resultados demonstram que o paralelismo pode reduzir significativamente o tempo de execucao quando aplicado corretamente.
+
+A versao SerialCPU apresentou implementacao simples e consistente.
+
+A versao ParallelCPU obteve os melhores resultados para os arquivos analisados, apresentando speedup relevante sem custos excessivos de comunicacao.
+
+A versao ParallelGPU executou corretamente utilizando OpenCL e produziu resultados identicos aos demais metodos. Entretanto, para os volumes de dados utilizados, os custos de transferencia e inicializacao superaram os ganhos potenciais da GPU.
+
+Conclui-se que a escolha da estrategia depende do volume de dados e das caracteristicas do hardware disponivel.
+
+---
 
 ## Referencias
 
-- Documentacao Java: `ExecutorService`, `Callable`, `Future`, `Files`.
-- JOCL 2.0.4: bindings Java para OpenCL.
-- OpenCL: modelo de execucao com kernels e work-items.
-- Project Gutenberg: origem dos textos usados como amostras.
+* Oracle. Java Platform Documentation.
+* Oracle. ExecutorService API Documentation.
+* Oracle. Future API Documentation.
+* Khronos Group. OpenCL Specification.
+* JOCL Project Documentation.
+* Project Gutenberg. Digital Library.
+
+---
 
 ## Anexos
 
-### Codigo principal
+### Codigo Principal
 
-Arquivo: `src/Main.java`
+Arquivo:
 
-O codigo contem:
+```text
+src/Main.java
+```
 
-- Metodo `serialCPU(byte[] text, byte[] word)`.
-- Metodo `parallelCPU(byte[] text, byte[] word, int threads)`.
-- Metodo `parallelGPU(OpenClCounter counter, byte[] text, byte[] word)`.
-- Classe `OpenClCounter`, responsavel pela integracao JOCL/OpenCL.
-- Geracao de CSV e graficos SVG.
+Contem:
 
-### Biblioteca externa
+* SerialCPU
+* ParallelCPU
+* ParallelGPU
+* OpenClCounter
+* Exportacao CSV
+* Geracao de graficos SVG
 
-A biblioteca `jocl-2.0.4.jar` fica no diretorio `lib/`, que e o local correto para dependencias externas deste projeto. Para executar, deixe o arquivo em um destes locais:
+### Biblioteca Externa
 
-- `lib/jocl-2.0.4.jar`
-- `~/Downloads/jocl-2.0.4.jar`
+Biblioteca utilizada:
 
-Ou execute informando o caminho:
+```text
+lib/jocl-2.0.4.jar
+```
+
+Pode ser localizada em:
+
+* `lib/jocl-2.0.4.jar`
+* `~/Downloads/jocl-2.0.4.jar`
+
+Ou informada manualmente:
 
 ```bash
 JOCL_JAR=/caminho/para/jocl-2.0.4.jar ./scripts/run.sh
