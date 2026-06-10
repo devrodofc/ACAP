@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="620" viewBox="0 0 1100 620">
+<rect width="100%" height="100%" fill="#f8fafc"/>
+<text x="42" y="38" font-size="24" font-family="Georgia, serif" font-weight="700" fill="#14213d">Tempo medio por metodo</text>
+<style>text{font-family:Arial,sans-serif;fill:#1f2937}.axis{stroke:#334155;stroke-width:1.5}.grid{stroke:#d7dee8;stroke-width:1}</style>
+<line class="axis" x1="95" y1="465" x2="1060" y2="465"/>
+<line class="axis" x1="95" y1="70" x2="95" y2="465"/>
+<line class="grid" x1="95" y1="465.00" x2="1060.00" y2="465.00"/>
+<text x="85" y="469.00" font-size="12" text-anchor="end">0.00</text>
+<line class="grid" x1="95" y1="386.00" x2="1060.00" y2="386.00"/>
+<text x="85" y="390.00" font-size="12" text-anchor="end">4.17</text>
+<line class="grid" x1="95" y1="307.00" x2="1060.00" y2="307.00"/>
+<text x="85" y="311.00" font-size="12" text-anchor="end">8.34</text>
+<line class="grid" x1="95" y1="228.00" x2="1060.00" y2="228.00"/>
+<text x="85" y="232.00" font-size="12" text-anchor="end">12.51</text>
+<line class="grid" x1="95" y1="149.00" x2="1060.00" y2="149.00"/>
+<text x="85" y="153.00" font-size="12" text-anchor="end">16.67</text>
+<line class="grid" x1="95" y1="70.00" x2="1060.00" y2="70.00"/>
+<text x="85" y="74.00" font-size="12" text-anchor="end">20.84</text>
+<text x="24" y="267.50" font-size="14" text-anchor="middle" transform="rotate(-90 24 267.50)">Tempo medio (ms)</text>
+<rect x="830" y="59" width="16" height="16" fill="#2457a6" rx="3"/>
+<text x="854" y="72" font-size="13">SerialCPU</text>
+<rect x="830" y="83" width="16" height="16" fill="#d95f02" rx="3"/>
+<text x="854" y="96" font-size="13">ParallelCPU</text>
+<rect x="140.23" y="70.00" width="82.43" height="395.00" fill="#2457a6" rx="4"/>
+<text x="181.45" y="64.00" font-size="11" text-anchor="middle">20.84</text>
+<rect x="240.76" y="139.38" width="82.43" height="325.62" fill="#d95f02" rx="4"/>
+<text x="281.97" y="133.38" font-size="11" text-anchor="middle">17.18</text>
+<text x="255.83" y="545" font-size="13" text-anchor="middle" transform="rotate(-18 255.83 545)">DonQuixote-388208.txt</text>
+<rect x="461.90" y="330.41" width="82.43" height="134.59" fill="#2457a6" rx="4"/>
+<text x="503.11" y="324.41" font-size="11" text-anchor="middle">7.10</text>
+<rect x="562.42" y="288.87" width="82.43" height="176.13" fill="#d95f02" rx="4"/>
+<text x="603.64" y="282.87" font-size="11" text-anchor="middle">9.29</text>
+<text x="577.50" y="545" font-size="13" text-anchor="middle" transform="rotate(-18 577.50 545)">Dracula-165307.txt</text>
+<rect x="783.57" y="272.64" width="82.43" height="192.36" fill="#2457a6" rx="4"/>
+<text x="824.78" y="266.64" font-size="11" text-anchor="middle">10.15</text>
+<rect x="884.09" y="266.67" width="82.43" height="198.33" fill="#d95f02" rx="4"/>
+<text x="925.30" y="260.67" font-size="11" text-anchor="middle">10.47</text>
+<text x="899.17" y="545" font-size="13" text-anchor="middle" transform="rotate(-18 899.17 545)">MobyDick-217452.txt</text>
+</svg>
