@@ -4,6 +4,10 @@
 
 ## Resumo
 
+Alunos:
+Rodrigo Morais Herrmann - 2310404
+Lorrân Brito da Silva - 2310430
+
 Este projeto compara tres abordagens para contagem de uma palavra em arquivos de texto utilizando Java:
 
 * `SerialCPU`: percorre o texto utilizando uma unica thread.
